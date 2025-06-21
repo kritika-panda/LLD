@@ -1,0 +1,198 @@
+1.SOLID Principles in Object-Oriented Design
+The SOLID principles are five design guidelines introduced by Robert C. Martin (Uncle Bob) to create maintainable, scalable, and flexible software systems.
+
+i. Single Responsibility Principle (SRP)
+A class should have only one reason to change.
+
+Explanation:
+A class should focus on a single responsibility or function. If a class handles multiple responsibilities, changes in one aspect may break or affect other parts.
+
+Example:
+class Invoice {
+    public void generateInvoice() {
+        // Generate invoice logic
+    }
+}
+
+class InvoicePrinter {
+    public void printInvoice(Invoice invoice) {
+        // Printing logic
+    }
+}
+Why SRP Matters: Printing logic is separated from invoice generation.
+
+ii. Open/Closed Principle (OCP)
+A class should be open for extension but closed for modification.
+
+Explanation:
+You should be able to add new features without modifying existing code.
+
+Example:
+interface Payment {
+    void processPayment();
+}
+
+class CreditCardPayment implements Payment {
+    public void processPayment() {
+        System.out.println("Processing credit card payment");
+    }
+}
+
+class PayPalPayment implements Payment {
+    public void processPayment() {
+        System.out.println("Processing PayPal payment");
+    }
+}
+Why OCP Matters: New payment methods can be added without altering existing classes.
+
+iii. Liskov Substitution Principle (LSP)
+Derived classes should be substitutable for their base classes.
+
+Explanation:
+Child classes must maintain the behavior of the parent class without breaking the system.
+
+Example:
+class Bird {
+    public void fly() {
+        System.out.println("Bird is flying");
+    }
+}
+
+class Sparrow extends Bird {
+}
+
+class Penguin extends Bird {
+    // Penguin cannot fly, so overriding would break LSP
+}
+Why LSP Matters: Classes must honor the contracts of their parent.
+
+iv. Interface Segregation Principle (ISP)
+Clients should not be forced to implement interfaces they don't use.
+
+Explanation:
+Divide large interfaces into smaller, more specific ones.
+
+Example:
+interface Flyable {
+    void fly();
+}
+
+interface Swimable {
+    void swim();
+}
+
+class Duck implements Flyable, Swimable {
+    public void fly() {
+        System.out.println("Duck is flying");
+    }
+
+    public void swim() {
+        System.out.println("Duck is swimming");
+    }
+}
+
+class Eagle implements Flyable {
+    public void fly() {
+        System.out.println("Eagle is flying");
+    }
+}
+Why ISP Matters: Duck implements only relevant interfaces.
+
+v. Dependency Inversion Principle (DIP)
+Depend on abstractions, not concrete implementations.
+
+Explanation:
+High-level modules should not depend on low-level modules. Both should depend on abstractions.
+🔹 Example Without DIP (Bad Design)
+class MySQLDatabase {
+    public void connect() {
+        System.out.println("Connected to MySQL");
+    }
+}
+
+class UserService {
+    private MySQLDatabase database;
+
+    public UserService() {
+        this.database = new MySQLDatabase(); // Direct dependency
+    }
+
+    public void getUser() {
+        database.connect();
+        System.out.println("Fetching user data");
+    }
+}
+💡 Problems:
+
+Tightly coupled: UserService depends directly on MySQLDatabase.
+Hard to switch to PostgreSQL or MongoDB.
+Violates Open-Closed Principle (OCP) since we need to modify UserService to change DB.
+
+
+Example:
+interface NotificationService {
+    void sendNotification(String message);
+}
+// Low-level Module
+class EmailNotificationService implements NotificationService {
+    public void sendNotification(String message) {
+        System.out.println("Sending Email: " + message);
+    }
+}
+// High-level Module
+class UserController {
+    private NotificationService notificationService;
+
+    public UserController(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
+    public void notifyUser() {
+        notificationService.sendNotification("Welcome!");
+    }
+}
+
+Why DIP Matters: Easily swap EmailNotificationService for a SMSNotificationService.
+
+
+// Abstraction (Interface)
+interface Database {
+    void connect();
+}
+
+// Low-level Modules
+class MySQLDatabase implements Database {
+    public void connect() {
+        System.out.println("Connected to MySQL");
+    }
+}
+
+class PostgreSQLDatabase implements Database {
+    public void connect() {
+        System.out.println("Connected to PostgreSQL");
+    }
+}
+
+// High-level Module
+class UserService {
+    private Database database;
+
+    // Dependency Injection via Constructor
+    public UserService(Database database) {
+        this.database = database;
+    }
+
+    public void getUser() {
+        database.connect();
+        System.out.println("Fetching user data");
+    }
+}
+
+// Main Application
+public class Main {
+    public static void main(String[] args) {
+        Database db = new MySQLDatabase();  // Can be PostgreSQL as well
+        UserService userService = new UserService(db);
+        userService.getUser();
+    }
+}

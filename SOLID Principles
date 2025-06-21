@@ -47,7 +47,6 @@ Why OCP Matters: New payment methods can be added without altering existing clas
 
 iii. Liskov Substitution Principle (LSP)
 Derived classes should be substitutable for their base classes.
-
 Explanation:
 Child classes must maintain the behavior of the parent class without breaking the system.
 
@@ -65,6 +64,54 @@ class Penguin extends Bird {
     // Penguin cannot fly, so overriding would break LSP
 }
 Why LSP Matters: Classes must honor the contracts of their parent.
+
+
+Fixing with LSP:
+
+interface Bird {
+    void eat();
+}
+
+interface FlyingBird extends Bird {
+    void fly();
+}
+
+class Sparrow implements FlyingBird {
+    public void eat() {
+        System.out.println("Sparrow eats seeds.");
+    }
+
+    public void fly() {
+        System.out.println("Sparrow flies.");
+    }
+}
+
+class Ostrich implements Bird {
+    public void eat() {
+        System.out.println("Ostrich eats plants.");
+    }
+}
+
+public class Zoo {
+    public static void letBirdEat(Bird bird) {
+        bird.eat();
+    }
+
+    public static void letBirdFly(FlyingBird bird) {
+        bird.fly();
+    }
+
+    public static void main(String[] args) {
+        Bird ostrich = new Ostrich();
+        FlyingBird sparrow = new Sparrow();
+
+        letBirdEat(ostrich);   // OK
+        letBirdEat(sparrow);   // OK
+        letBirdFly(sparrow);   // OK
+        // letBirdFly(ostrich); // Compile-time error — and that’s good!
+    }
+}
+
 
 iv. Interface Segregation Principle (ISP)
 Clients should not be forced to implement interfaces they don't use.

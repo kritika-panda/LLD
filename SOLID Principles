@@ -147,7 +147,6 @@ Why ISP Matters: Duck implements only relevant interfaces.
 
 v. Dependency Inversion Principle (DIP)
 Depend on abstractions, not concrete implementations.
-
 Explanation:
 High-level modules should not depend on low-level modules. Both should depend on abstractions.
 🔹 Example Without DIP (Bad Design)

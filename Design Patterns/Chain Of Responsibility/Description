@@ -54,3 +54,59 @@ logObject.log(LogProcessor.INFO, "just for info");
 - Flexible: Want to add TraceLogProcessor or WarningLogProcessor? Just drop it in the chain—no other class needs to change.
 - Maintainable: No bloated if-else logic or switch statements packed into a single class.
 - Decoupled: The sender (Main) doesn’t care who handles the message—it just sends and lets the chain sort it out.
+
+
+
+During the first log call in your main() method:
+`java
+logObject.log(LogProcessor.ERROR, "exception happens");
+`
+your system kicks off a chain reaction within the Chain of Responsibility structure. Here's a line-by-line breakdown of what happens internally:
+---
+:gear: Step-by-Step Breakdown
+1. Call begins at InfoLogProcessor (since it’s the head of the chain):
+   `java
+   if (logLevel == INFO) {
+       System.out.println("INFO: " + message);
+   } else {
+       super.log(logLevel, message);
+   }
+   `
+   - logLevel == ERROR → does not match INFO
+   - Control passes to super.log() → which leads to the next processor: DebugLogProcessor
+---
+2. Control moves to DebugLogProcessor:
+   `java
+   if (logLevel == DEBUG) {
+       System.out.println("DEBUG: " + message);
+   } else {
+       super.log(logLevel, message);
+   }
+   `
+   - logLevel == ERROR → does not match DEBUG
+   - Again, control passes to super.log() → now it’s ErrorLogProcessor's turn
+---
+3. Now in ErrorLogProcessor:
+   `java
+   if (logLevel == ERROR) {
+       System.out.println("ERROR: " + message);
+   } else {
+       super.log(logLevel, message);
+   }
+   `
+   - logLevel == ERROR → this matches!
+   - So the message "exception happens" is logged:
+     `
+     ERROR: exception happens
+     `
+---
+:repeat: Recap of the Flow
+`
+Main              → InfoLogProcessor → DebugLogProcessor → ErrorLogProcessor
+log(ERROR, msg)   →      :x:          →        :x:          →        :white_check_mark:
+`
+Each processor checks:
+- If it can handle the log level → prints the message
+- If not → forwards the request to the next in chain
+---
+This is the beauty of the pattern—you set up the chain once, and the log messages find their proper home on their own, without tight coupling or conditional spaghetti.

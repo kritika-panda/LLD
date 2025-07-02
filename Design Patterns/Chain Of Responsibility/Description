@@ -1,0 +1,56 @@
+1. Structure & Participants
+Your system has a base abstract class:
+- LogProcessor – defines the log() method and stores the next processor in the chain.
+And three concrete subclasses:
+Class  Handles Log Level  Action Taken
+InfoLogProcessor  INFO (1)  Prints INFO: message
+DebugLogProcessor  DEBUG (2)  Prints DEBUG: message
+ErrorLogProcessor  ERROR (3)  Prints ERROR: message
+Each one either handles the log message or passes it to the next.
+---
+:gear: 2. How the Chain Works in Practice
+This part of your main() method builds the chain like this:
+`java
+LogProcessor logObject = new InfoLogProcessor(
+                             new DebugLogProcessor(
+                                 new ErrorLogProcessor(null)));
+`
+This sets up a sequence like:
+`
+InfoLogProcessor → DebugLogProcessor → ErrorLogProcessor → null
+`
+So now, any log message sent to logObject starts at the beginning of the chain and passes through each node until it’s either handled or reaches the end.
+---
+:dart: 3. Execution Flow: Line by Line
+`java
+logObject.log(LogProcessor.ERROR, "exception happens");
+`
+- InfoLogProcessor: can’t handle → passes to
+- DebugLogProcessor: can’t handle → passes to
+- ErrorLogProcessor: handles it ➤ prints:
+  `
+  ERROR: exception happens
+  `
+---
+`java
+logObject.log(LogProcessor.DEBUG, "need to debug this");
+`
+- InfoLogProcessor: can’t handle → passes to
+- DebugLogProcessor: handles it ➤ prints:
+  `
+  DEBUG: need to debug this
+  `
+---
+`java
+logObject.log(LogProcessor.INFO, "just for info");
+`
+- InfoLogProcessor: handles it directly ➤ prints:
+  `
+  INFO: just for info
+  `
+---
+:white_check_mark: 4. Why This Pattern Works So Well Here
+- Modular: Each processor is focused on one responsibility.
+- Flexible: Want to add TraceLogProcessor or WarningLogProcessor? Just drop it in the chain—no other class needs to change.
+- Maintainable: No bloated if-else logic or switch statements packed into a single class.
+- Decoupled: The sender (Main) doesn’t care who handles the message—it just sends and lets the chain sort it out.

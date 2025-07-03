@@ -1,0 +1,18 @@
+The Null Object Pattern is a behavioral design pattern that provides a 
+default, do-nothing implementation of an interface to avoid null checks and simplify client code.
+
+🧠 Core Idea
+Instead of returning null when an object is missing, return a neutral object 
+that implements the expected interface but performs no action. This avoids if (obj != null) checks and keeps logic clean.
+
+✅ Benefits
+- Eliminates repetitive null checks
+- Simplifies client code
+- Promotes polymorphism and clean design
+- Reduces risk of NullPointerException
+
+🚫 When to Avoid
+- If the absence of an object should trigger an error
+- When the "null" behavior is complex or stateful
+- If it introduces confusion between real and placeholder objects
+

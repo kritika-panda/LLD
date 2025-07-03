@@ -1,0 +1,16 @@
+The Adapter Design Pattern is a structural pattern that allows objects with incompatible interfaces to work together by acting as a bridge between them. It’s especially useful when integrating legacy code or third-party libraries into a new system.
+
+🧩 Core Components
+| Component | Role | 
+| Target | The interface expected by the client | 
+| Adaptee | The existing class with an incompatible interface | 
+| Adapter | Converts the Adaptee’s interface into the Target’s interface | 
+| Client | Uses the Target interface without knowing about the Adapter or Adaptee | 
+
+
+
+💡 Real-Life Analogy
+Think of a power adapter: your laptop plug doesn’t fit the socket in another country, 
+so you use an adapter to make it compatible. Similarly, in code, the adapter translates one interface into another.
+
+

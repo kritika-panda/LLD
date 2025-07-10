@@ -4,9 +4,9 @@ public class Main {
         BeverageMaker coffee = new CoffeeMaker();
 
         System.out.println("Making tea:");
-        tea.prepare();
+        tea.makeBeverage();
 
         System.out.println("\nMaking coffee:");
-        coffee.prepare();
+        coffee.makeBeverage();
     }
 }

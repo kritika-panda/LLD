@@ -1,0 +1,49 @@
+- Strategy Interface: Declares a method (e.g., sort()).
+- Concrete Strategies: Implement variations of the behavior.
+- Context Class: Uses a Strategy object and delegates to it.
+- Client Code: Configures which Strategy to use.
+
+The Strategy Design Pattern is all about defining a family of algorithms, encapsulating each one, 
+and making them interchangeable at runtime — without altering the client code that uses them. 
+It's one of the most intuitive and powerful patterns for achieving flexibility in behavior.
+
+🧠 Core Idea
+"Let the algorithm vary independently from the clients that use it."
+Instead of hardcoding logic, you define different strategies (algorithms) and swap them as needed.
+
+
+🚀 Use Cases
+| Scenario | Why Strategy Works | 
+| Sorting Algorithms | Flexible based on data size or distribution | 
+| Payment Gateways | Plug in different processors (PayPal, Stripe) | 
+| Compression Formats | Switch between ZIP, RAR, GZIP dynamically | 
+| Logging Frameworks | Choose console vs file vs DB logging at runtime | 
+
+
+
+🛡 Benefits
+- Open for extension: Add new strategies without touching existing logic
+- Decouples algorithm from client: Enhances modularity
+- Promotes SOLID principles: Especially Open/Closed and Single Responsibility
+
+
+
+
+
+
+
+
+
+
+
+
+Use Cases
+| Scenario | Why Strategy Works | 
+| Sorting Algorithms | Flexible based on data size or distribution | 
+| Payment Gateways | Plug in different processors (PayPal, Stripe) | 
+| Compression Formats | Switch between ZIP, RAR, GZIP dynamically | 
+| Logging Frameworks | Choose console vs file vs DB logging at runtime | 
+
+
+
+

@@ -1,0 +1,88 @@
+Let's build a mini notification system using the Observer pattern, where users subscribe to specific groups (think channels or event categories) and get notified when something new happens in their group.
+
+🧪 Scenario: Group-Based Notifications
+- Subject: GroupTopic — like "Sports" or "Technology"
+- Observers: UserSubscriber — users who want to receive updates
+- Event: When a message is published to a group, notify all subscribers.
+
+
+// Observer Interface
+interface Subscriber {
+    void receive(String topic, String message);
+}
+
+// Concrete Observer
+class UserSubscriber implements Subscriber {
+    private String name;
+
+    public UserSubscriber(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void receive(String topic, String message) {
+        System.out.println(name + " received update from " + topic + ": " + message);
+    }
+}
+
+// Subject Interface
+interface GroupTopic {
+    void subscribe(Subscriber s);
+    void unsubscribe(Subscriber s);
+    void notifySubscribers(String message);
+}
+
+// Concrete Subject
+class SportsTopic implements GroupTopic {
+    private List<Subscriber> subscribers = new ArrayList<>();
+
+    @Override
+    public void subscribe(Subscriber s) {
+        subscribers.add(s);
+    }
+
+    @Override
+    public void unsubscribe(Subscriber s) {
+        subscribers.remove(s);
+    }
+
+    @Override
+    public void notifySubscribers(String message) {
+        for (Subscriber s : subscribers) {
+            s.receive("Sports", message);
+        }
+    }
+
+    public void publish(String msg) {
+        System.out.println("📢 Sports Update: " + msg);
+        notifySubscribers(msg);
+    }
+}
+
+// Demo Code
+public class ObserverPatternNotificationDemo {
+    public static void main(String[] args) {
+        SportsTopic sports = new SportsTopic();
+
+        Subscriber kritika = new UserSubscriber("Kritika");
+        Subscriber arjun = new UserSubscriber("Arjun");
+
+        sports.subscribe(kritika);
+        sports.subscribe(arjun);
+
+        sports.publish("India won the test match!");
+        sports.unsubscribe(arjun);
+        sports.publish("New IPL schedule released.");
+    }
+}
+
+
+
+📢 Sports Update: India won the test match!
+Kritika received update from Sports: India won the test match!
+Arjun received update from Sports: India won the test match!
+
+📢 Sports Update: New IPL schedule released.
+Kritika received update from Sports: New IPL schedule released.
+
+

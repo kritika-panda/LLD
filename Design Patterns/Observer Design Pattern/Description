@@ -1,0 +1,21 @@
+The Observer Design Pattern is a behavioral pattern that defines a one-to-many relationship between 
+objects so that when one object (called the subject) changes its state, all its dependents (observers) 
+are notified and updated automatically.
+
+🧠 Core Concept
+Think of a news agency (Subject) and multiple subscribers (Observers). When news is published, 
+all subscribers get notified immediately.
+
+🧵 Java Structure of Observer Pattern
+- Subject Interface: Defines methods to attach, detach, and notify observers.
+- Concrete Subject: Holds state and notifies observers on change.
+- Observer Interface: Declares the update() method.
+- Concrete Observers: Implement update() and react to changes.
+
+ Interview Insight
+- Loose coupling: Observers don't need to know how the subject works.
+- Dynamic subscription: You can add/remove observers at runtime.
+- Real-world usages:
+- UI event listeners
+- Stock ticker updates
+- Pub-sub systems like Kafka

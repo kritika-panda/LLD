@@ -11,15 +11,12 @@ It's one of the most intuitive and powerful patterns for achieving flexibility i
 "Let the algorithm vary independently from the clients that use it."
 Instead of hardcoding logic, you define different strategies (algorithms) and swap them as needed.
 
-
 🚀 Use Cases
 | Scenario | Why Strategy Works | 
 | Sorting Algorithms | Flexible based on data size or distribution | 
 | Payment Gateways | Plug in different processors (PayPal, Stripe) | 
 | Compression Formats | Switch between ZIP, RAR, GZIP dynamically | 
 | Logging Frameworks | Choose console vs file vs DB logging at runtime | 
-
-
 
 🛡 Benefits
 - Open for extension: Add new strategies without touching existing logic

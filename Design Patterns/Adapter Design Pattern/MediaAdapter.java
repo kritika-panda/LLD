@@ -1,13 +1,20 @@
 // Adapter
-class MediaAdapter implements MediaPlayer {
-    AdvancedMediaPlayer advancedPlayer = new AdvancedMediaPlayer();
+public class MediaAdapter implements MediaPlayer {
+    AdvancedMediaPlayer advancedPlayer;
+
+    public MediaAdapter(String audioType) {
+        if (audioType.equalsIgnoreCase("vlc")) {
+            advancedPlayer = new VlcPlayer();
+        } else if (audioType.equalsIgnoreCase("mp4")) {
+            advancedPlayer = new Mp4Player();
+        }
+    }
 
     public void play(String audioType, String fileName) {
-        if (audioType.equalsIgnoreCase("mp4")) {
+        if (audioType.equalsIgnoreCase("vlc")) {
+            advancedPlayer.playVlc(fileName);
+        } else if (audioType.equalsIgnoreCase("mp4")) {
             advancedPlayer.playMp4(fileName);
-        } else {
-            System.out.println("Unsupported format: " + audioType);
         }
     }
 }
-

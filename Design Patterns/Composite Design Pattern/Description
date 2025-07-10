@@ -1,0 +1,21 @@
+The Composite Design Pattern is a structural pattern that allows you to treat individual objects and 
+compositions of objects uniformly. It’s ideal when you want to build hierarchical structures (like trees) — 
+and clients shouldn’t care whether they’re dealing with a single item or a group.
+
+🌳 Core Concept
+“Compose objects into tree structures to represent part-whole hierarchies.”
+
+You define a common interface for both leaf and composite nodes, so the client can interact with any node in 
+the structure without special logic.
+
+Key Components
+| Role | Description | 
+| Component | Common interface for all nodes | 
+| Leaf | Represents individual objects | 
+| Composite | Represents groups of Components | 
+| Client | Works with Component uniformly | 
+
+
+
+
+

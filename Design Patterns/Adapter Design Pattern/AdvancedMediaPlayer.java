@@ -1,7 +1,5 @@
 // Adaptee
-class AdvancedMediaPlayer {
-    void playMp4(String fileName) {
-        System.out.println("Playing mp4 file: " + fileName);
-    }
+public interface AdvancedMediaPlayer {
+    void playVlc(String fileName);
+    void playMp4(String fileName);
 }
-

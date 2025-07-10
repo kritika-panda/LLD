@@ -1,0 +1,65 @@
+// Observer Interface
+interface Observer {
+    void update(float temperature);
+}
+
+// Subject Interface
+interface WeatherStation {
+    void addObserver(Observer o);
+    void removeObserver(Observer o);
+    void notifyObservers();
+}
+
+// Concrete Subject
+class BasicWeatherStation implements WeatherStation {
+    private List<Observer> observers = new ArrayList<>();
+    private float temperature;
+
+    public void setTemperature(float temp) {
+        this.temperature = temp;
+        notifyObservers(); // Trigger update
+    }
+
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    public void notifyObservers() {
+        for (Observer o : observers) {
+            o.update(temperature);
+        }
+    }
+}
+
+// Concrete Observers
+class PhoneDisplay implements Observer {
+    public void update(float temperature) {
+        System.out.println("Phone Display: Temp is " + temperature + "°C");
+    }
+}
+
+class WindowDisplay implements Observer {
+    public void update(float temperature) {
+        System.out.println("Window Display: Temp is " + temperature + "°C");
+    }
+}
+
+// Driver Code
+public class ObserverPatternDemo {
+    public static void main(String[] args) {
+        BasicWeatherStation station = new BasicWeatherStation();
+
+        Observer phone = new PhoneDisplay();
+        Observer window = new WindowDisplay();
+
+        station.addObserver(phone);
+        station.addObserver(window);
+
+        station.setTemperature(25.0f);
+        station.setTemperature(27.5f);
+    }
+}

@@ -3,7 +3,8 @@ default, do-nothing implementation of an interface to avoid null checks and simp
 
 🧠 Core Idea
 Instead of returning null when an object is missing, return a neutral object 
-that implements the expected interface but performs no action. This avoids if (obj != null) checks and keeps logic clean.
+that implements the expected interface but performs no action. This avoids if (obj != null) checks and 
+keeps logic clean.
 
 ✅ Benefits
 - Eliminates repetitive null checks

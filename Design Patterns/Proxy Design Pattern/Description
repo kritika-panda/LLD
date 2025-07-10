@@ -1,0 +1,11 @@
+The Proxy Design Pattern provides a surrogate or placeholder for another object to control access to it. It's one of the structural patterns, often used when direct access to an object is either costly, sensitive, or requires additional behavior (like lazy loading or access control).
+
+🧠 Core Concept
+“Use a substitute object to control access to a real one.”
+
+Instead of interacting with the actual object, the client talks to a proxy that acts on its behalf.
+
+🧪 Real-World Analogy
+Think of a security guard outside a private vault:
+- You don’t access the vault directly.
+- The guard checks credentials and then lets you in. That guard is a proxy to the vault.

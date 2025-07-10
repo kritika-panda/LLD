@@ -1,0 +1,40 @@
+Creational Patterns — deal with object creation mechanisms
+| Pattern | Definition | Use Case | Example | 
+| Singleton | Ensures a class has only one instance, with a global access point | Logging, config, thread pools | Logger.getInstance() | 
+| Factory Method | Delegates instantiation logic to subclasses | Flexible object creation, decoupling instantiation | ShapeFactory.create("circle") | 
+| Abstract Factory | Produces families of related objects without specifying classes | GUI toolkits, multiple OS support | UIFactory.createButton() | 
+| Builder | Constructs complex objects step-by-step | When constructors have too many parameters | PizzaBuilder().addCheese().setSize() | 
+| Prototype | Clones existing objects instead of creating from scratch | Object duplication, performance-critical cloning | car.clone() | 
+
+
+
+Structural Patterns — define relationships between objects
+| Pattern | Definition | Use Case | Example | 
+| Adapter | Converts one interface to another for compatibility | Legacy system integration | SocketAdapter | 
+| Decorator | Adds behavior to objects dynamically | UI components, logging wrappers | BufferedReader(new FileReader()) | 
+| Facade | Provides a simplified interface to a complex system | API gateway, subsystem abstraction | DatabaseFacade.connect() | 
+| Proxy | Controls access to another object | Lazy loading, security, caching | ImageProxy.load() | 
+| Bridge | Decouples abstraction from its implementation | UI themes vs device types | RemoteControl vs TV | 
+| Composite | Treats group of objects as a single object | Tree structures like filesystems | File and Folder implementing Component | 
+
+ Behavioral Patterns — manage communication between objects
+| Pattern | Definition | Use Case | Example | 
+| Strategy | Encapsulates interchangeable algorithms | Sorting, compression strategies | SortContext.setStrategy() | 
+| Observer | Defines one-to-many dependency for updates | Event systems, GUIs, pub-sub | EventListener.onChange() | 
+| Command | Encapsulates a request as an object | Undo operations, remote control | Command.execute() | 
+| Template Method | Skeleton of an algorithm with customizable steps | Reusable process flows | sort() with compare() override | 
+| Iterator | Provides sequential access to elements | List traversal, custom containers | Iterator.hasNext() | 
+| Chain of Responsibility | Passes requests along a chain until handled | Logging, validation, middleware | Handler.process() | 
+| State | Allows an object to change behavior based on state | UI widgets, game characters | Context.setState() | 
+| Mediator | Centralizes communication between components | Chat system, complex UI components | Mediator.notify() | 
+| Memento | Captures internal state for rollback | Undo/redo systems | Caretaker.save() | 
+| Visitor | Adds operations to object structure without modifying it | Compilers, file explorers | Visitor.visit(File) | 
+| Interpreter | Parses and evaluates grammar expressions | DSLs, Regex, math parsers | Expression.evaluate() | 
+
+
+
+
+
+
+
+

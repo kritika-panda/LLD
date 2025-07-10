@@ -1,0 +1,68 @@
+ava Example: File System Simulation
+1. Component Interface
+interface FileSystem {
+    void ls(); // list content
+}
+
+
+2. Leaf Node
+class File implements FileSystem {
+    private String name;
+
+    public File(String name) {
+        this.name = name;
+    }
+
+    public void ls() {
+        System.out.println("📄 " + name);
+    }
+}
+
+
+3. Composite Node
+class Folder implements FileSystem {
+    private String name;
+    private List<FileSystem> children = new ArrayList<>();
+
+    public Folder(String name) {
+        this.name = name;
+    }
+
+    public void add(FileSystem fs) {
+        children.add(fs);
+    }
+
+    public void ls() {
+        System.out.println("📁 " + name);
+        for (FileSystem child : children) {
+            child.ls();
+        }
+    }
+}
+
+
+4. Client Code
+public class CompositeDemo {
+    public static void main(String[] args) {
+        Folder root = new Folder("root");
+        File a = new File("a.txt");
+        Folder sub = new Folder("docs");
+        File b = new File("b.pdf");
+
+        sub.add(b);
+        root.add(a);
+        root.add(sub);
+
+        root.ls();
+    }
+}
+
+
+
+🧠 Output
+📁 root
+📄 a.txt
+📁 docs
+📄 b.pdf
+
+

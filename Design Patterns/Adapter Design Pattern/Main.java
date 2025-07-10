@@ -1,8 +1,11 @@
 // Client
-class Main {
-    MediaPlayer player = new MediaAdapter();
+public class Main {
+    public static void main(String[] args) {
+        AudioPlayer player = new AudioPlayer();
 
-    public void play(String audioType, String fileName) {
-        player.play(audioType, fileName);
+        player.play("mp3", "song.mp3");
+        player.play("mp4", "video.mp4");
+        player.play("vlc", "movie.vlc");
+        player.play("avi", "clip.avi");
     }
 }

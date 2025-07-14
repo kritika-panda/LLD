@@ -7,6 +7,6 @@ The Memento pattern involves three key components:
 
 Role	Description
 Originator	The object whose state needs to be saved and restored
-Memento	A snapshot of the Originator’s state
+Memento	  A snapshot of the Originator’s state
 Caretaker	Manages the Memento but doesn’t modify it
 This pattern is commonly used in undo/redo functionality in editors or games.

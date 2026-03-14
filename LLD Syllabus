@@ -1,0 +1,289 @@
+1. Object‑Oriented Programming (OOP) — Core Foundation 
+
+You must master these concepts deeply: 
+
+✔ OOP Principles 
+
+Encapsulation 
+
+Abstraction 
+
+Inheritance 
+
+Polymorphism 
+
+✔ 4 Pillars of LLD 
+
+Cohesion 
+
+Coupling 
+
+Composition vs Inheritance 
+
+Interfaces vs Abstract classes 
+
+✔ SOLID Principles 
+
+Single Responsibility 
+
+Open/Closed 
+
+Liskov Substitution 
+
+Interface Segregation 
+
+Dependency Inversion 
+
+✔ Other Essential Principles 
+
+DRY 
+
+KISS 
+
+YAGNI 
+
+GRASP principles (very important!) 
+
+ 
+
+📍 2. UML & Design Modeling 
+
+You should know how to draw: 
+
+Class diagrams 
+
+Sequence diagrams 
+
+Activity diagrams 
+
+State machine diagrams 
+
+ER diagrams (optional) 
+
+Companies often ask you to draw diagrams during LLD rounds. 
+
+ 
+
+📍 3. Design Patterns (A Must for Interviews) 
+
+Creational Patterns 
+
+Singleton 
+
+Factory Method 
+
+Abstract Factory 
+
+Builder 
+
+Prototype 
+
+Structural Patterns 
+
+Adapter 
+
+Decorator 
+
+Facade 
+
+Proxy 
+
+Composite 
+
+Flyweight 
+
+Behavioral Patterns 
+
+Strategy 
+
+Observer 
+
+Command 
+
+Template Method 
+
+Chain of Responsibility 
+
+Iterator 
+
+State 
+
+You must know when and why to use each one. 
+
+ 
+
+📍 4. Coding Constructs for LLD 
+
+You should comfortably write: 
+
+Class design 
+
+Interfaces and contracts 
+
+Enums 
+
+Exceptions 
+
+Immutability 
+
+Thread‑safe classes 
+
+Caching 
+
+Singleton implementations 
+
+Service Layer + Repository Layer separation 
+
+ 
+
+📍 5. LLD Case Studies (Most Important Section) 
+
+Interviewers ALWAYS ask 1–2 of these. 
+
+⭐ Core LLD Questions 
+
+Design a Parking Lot 
+
+Design an Elevator System 
+
+Design a Movie Ticket Booking System 
+
+Design a Splitwise 
+
+Design a Cricbuzz / Live Scoreboard 
+
+Design a Logging Framework 
+
+Design a Hotel/Room Booking System 
+
+Design a Coffee Vending Machine 
+
+Design Snake & Ladder 
+
+Design a Game (Chess/Ludo/Tic‑Tac‑Toe) 
+
+Design a Rate Limiter (Token Bucket / Leaky Bucket) 
+
+Design Amazon Locker 
+
+Design Airline Management System 
+
+⭐ Payment & Finance Domain (very common) 
+
+Design Wallet System 
+
+Design UPI/Payment Gateway 
+
+Design Expense Tracker 
+
+⭐ Concurrency-Focused LLD 
+
+Design Thread Pool 
+
+Design Blocking Queue 
+
+Design Pub/Sub Framework 
+
+Reader‑Writer Lock 
+
+Producer‑Consumer 
+
+ 
+
+📍 6. Databases in LLD 
+
+Even in LLD, you must show you understand storage. 
+
+Learn: 
+
+Basic schema design 
+
+Normalization 
+
+Mapping classes to DB tables 
+
+Repositories (DAO layer) 
+
+Transaction handling (ACID basics) 
+
+ 
+
+📍 7. API Design Basics 
+
+Companies will expect you to show: 
+
+Request/response modeling 
+
+DTOs vs Entities 
+
+Validation 
+
+Versioning 
+
+Pagination, filtering 
+
+ 
+
+📍 8. Clean Code & Best Practices 
+
+Very important for top companies. 
+
+Meaningful class naming 
+
+Designing extensible code 
+
+Handling edge cases 
+
+Avoiding God classes 
+
+Proper package structure 
+
+ 
+
+📍 9. Testing Fundamentals 
+
+You must show awareness of testing: 
+
+Unit testing 
+
+Mocking 
+
+Testable class structure 
+
+Dependency injection 
+
+ 
+
+📍 10. End‑to‑End LLD Practice 
+
+Mock complete designs including: 
+
+Requirements clarification 
+
+Functional & non‑functional requirements 
+
+Class diagram 
+
+Sequence diagram 
+
+Class definitions 
+
+Design pattern justification 
+
+Trade-offs 
+
+ 
+
+🎯 How to Prepare (Roadmap) 
+
+Week 1 → OOP + SOLID 
+
+Week 2 → Design Patterns 
+
+Week 3 → UML + class modeling 
+
+Week 4 → LLD problems (Parking lot, Elevator, Splitwise) 
+
+Week 5 → High‑quality coding + concurrency 
+
+ 

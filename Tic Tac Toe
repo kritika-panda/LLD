@@ -1,0 +1,585 @@
+import java.util.*; 
+
+ 
+
+// ====== Enums ====== 
+
+enum GameStatus { IN_PROGRESS, WON, DRAW } 
+
+enum Symbol { X, O } 
+
+ 
+
+// ====== Value Objects ====== 
+
+final class Position { 
+
+    final int row, col; 
+
+    Position(int r, int c) { this.row = r; this.col = c; } 
+
+} 
+
+ 
+
+final class Move { 
+
+    final Position pos; 
+
+    final Player player; 
+
+    Move(Position pos, Player player) { 
+
+        this.pos = pos; 
+
+        this.player = player; 
+
+    } 
+
+} 
+
+ 
+
+// ====== Core Model ====== 
+
+class Cell { 
+
+    final int row, col; 
+
+    Symbol symbol; // null means empty 
+
+ 
+
+    Cell(int r, int c) { 
+
+        this.row = r; 
+
+        this.col = c; 
+
+        this.symbol = null; 
+
+    } 
+
+ 
+
+    boolean isEmpty() { return symbol == null; } 
+
+    void place(Symbol s) { this.symbol = s; } 
+
+    void clear() { this.symbol = null; } 
+
+} 
+
+ 
+
+class Board { 
+
+    private final int size; 
+
+    private final Cell[][] cells; 
+
+ 
+
+    Board(int size) { 
+
+        if (size < 3) throw new IllegalArgumentException("Minimum board size is 3"); 
+
+        this.size = size; 
+
+        this.cells = new Cell[size][size]; 
+
+        for (int r = 0; r < size; r++) { 
+
+            for (int c = 0; c < size; c++) { 
+
+                cells[r][c] = new Cell(r, c); 
+
+            } 
+
+        } 
+
+    } 
+
+ 
+
+    int getSize() { return size; } 
+
+ 
+
+    boolean isInBounds(int r, int c) { 
+
+        return r >= 0 && r < size && c >= 0 && c < size; 
+
+    } 
+
+ 
+
+    Cell getCell(int r, int c) { return cells[r][c]; } 
+
+ 
+
+    boolean isFull() { 
+
+        for (int r = 0; r < size; r++) { 
+
+            for (int c = 0; c < size; c++) { 
+
+                if (cells[r][c].isEmpty()) return false; 
+
+            } 
+
+        } 
+
+        return true; 
+
+    } 
+
+ 
+
+    void print() { 
+
+        for (int r = 0; r < size; r++) { 
+
+            StringBuilder sb = new StringBuilder(); 
+
+            for (int c = 0; c < size; c++) { 
+
+                Symbol s = cells[r][c].symbol; 
+
+                sb.append(s == null ? "." : s.name()); 
+
+                if (c < size - 1) sb.append(" "); 
+
+            } 
+
+            System.out.println(sb); 
+
+        } 
+
+    } 
+
+} 
+
+ 
+
+// ====== Players ====== 
+
+abstract class Player { 
+
+    final String name; 
+
+    final Symbol symbol; 
+
+ 
+
+    Player(String name, Symbol symbol) { 
+
+        this.name = name; 
+
+        this.symbol = symbol; 
+
+    } 
+
+ 
+
+    String getName() { return name; } 
+
+    Symbol getSymbol() { return symbol; } 
+
+} 
+
+ 
+
+// (Later you can subclass for Human vs Bot; engine doesn't need direct input handling) 
+
+ 
+
+// ====== Winning Strategy ====== 
+
+interface WinningStrategy { 
+
+    boolean checkWin(Board board, Move lastMove); 
+
+    // For undo support, expose a hook to roll back counters 
+
+    default void onMoveApplied(Board board, Move lastMove) {} 
+
+    default void onUndo(Board board, Move undoneMove) {} 
+
+} 
+
+ 
+
+/** 
+
+* Efficient counter-based strategy for classic NxN tic-tac-toe. 
+
+* For each Symbol, maintain: 
+
+*  - rowCounts[symbol][row] 
+
+*  - colCounts[symbol][col] 
+
+*  - diagCounts[symbol] 
+
+*  - antiDiagCounts[symbol] 
+
+* A player wins when any count == board.size 
+
+*/ 
+
+class ClassicNxNWinningStrategy implements WinningStrategy { 
+
+    private final Map<Symbol, int[]> rowCounts = new EnumMap<>(Symbol.class); 
+
+    private final Map<Symbol, int[]> colCounts = new EnumMap<>(Symbol.class); 
+
+    private final Map<Symbol, Integer> diagCounts = new EnumMap<>(Symbol.class); 
+
+    private final Map<Symbol, Integer> antiDiagCounts = new EnumMap<>(Symbol.class); 
+
+ 
+
+    private int n = -1; 
+
+ 
+
+    private void initIfNeeded(Board board) { 
+
+        if (n != -1) return; 
+
+        n = board.getSize(); 
+
+        for (Symbol s : Symbol.values()) { 
+
+            rowCounts.put(s, new int[n]); 
+
+            colCounts.put(s, new int[n]); 
+
+            diagCounts.put(s, 0); 
+
+            antiDiagCounts.put(s, 0); 
+
+        } 
+
+    } 
+
+ 
+
+    @Override 
+
+    public void onMoveApplied(Board board, Move lastMove) { 
+
+        initIfNeeded(board); 
+
+        Symbol s = lastMove.player.getSymbol(); 
+
+        int r = lastMove.pos.row, c = lastMove.pos.col; 
+
+        rowCounts.get(s)[r]++; 
+
+        colCounts.get(s)[c]++; 
+
+        if (r == c) diagCounts.put(s, diagCounts.get(s) + 1); 
+
+        if (r + c == n - 1) antiDiagCounts.put(s, antiDiagCounts.get(s) + 1); 
+
+    } 
+
+ 
+
+    @Override 
+
+    public void onUndo(Board board, Move undoneMove) { 
+
+        initIfNeeded(board); 
+
+        Symbol s = undoneMove.player.getSymbol(); 
+
+        int r = undoneMove.pos.row, c = undoneMove.pos.col; 
+
+        rowCounts.get(s)[r]--; 
+
+        colCounts.get(s)[c]--; 
+
+        if (r == c) diagCounts.put(s, diagCounts.get(s) - 1); 
+
+        if (r + c == n - 1) antiDiagCounts.put(s, antiDiagCounts.get(s) - 1); 
+
+    } 
+
+ 
+
+    @Override 
+
+    public boolean checkWin(Board board, Move lastMove) { 
+
+        initIfNeeded(board); 
+
+        Symbol s = lastMove.player.getSymbol(); 
+
+        int r = lastMove.pos.row, c = lastMove.pos.col; 
+
+ 
+
+        if (rowCounts.get(s)[r] == n) return true; 
+
+        if (colCounts.get(s)[c] == n) return true; 
+
+        if (r == c && diagCounts.get(s) == n) return true; 
+
+        if (r + c == n - 1 && antiDiagCounts.get(s) == n) return true; 
+
+        return false; 
+
+    } 
+
+} 
+
+ 
+
+// ====== Game Engine ====== 
+
+class Game { 
+
+    private final Board board; 
+
+    private final List<Player> players; 
+
+    private final WinningStrategy winningStrategy; 
+
+ 
+
+    private GameStatus status = GameStatus.IN_PROGRESS; 
+
+    private int currentPlayerIdx = 0; 
+
+    private final Deque<Move> moves = new ArrayDeque<>(); 
+
+    private Player winner = null; 
+
+ 
+
+    private Game(Board board, List<Player> players, WinningStrategy winningStrategy) { 
+
+        this.board = board; 
+
+        this.players = players; 
+
+        this.winningStrategy = winningStrategy; 
+
+    } 
+
+ 
+
+    public static class Builder { 
+
+        private int size = 3; 
+
+        private final List<Player> players = new ArrayList<>(); 
+
+        private WinningStrategy winningStrategy = new ClassicNxNWinningStrategy(); 
+
+ 
+
+        public Builder size(int n) { this.size = n; return this; } 
+
+        public Builder addPlayer(Player p) { this.players.add(p); return this; } 
+
+        public Builder winningStrategy(WinningStrategy s) { this.winningStrategy = s; return this; } 
+
+ 
+
+        public Game build() { 
+
+            if (players.size() != 2) throw new IllegalArgumentException("Exactly 2 players required"); 
+
+            if (players.get(0).getSymbol() == players.get(1).getSymbol()) { 
+
+                throw new IllegalArgumentException("Players must have different symbols"); 
+
+            } 
+
+            return new Game(new Board(size), players, winningStrategy); 
+
+        } 
+
+    } 
+
+ 
+
+    public Board getBoard() { return board; } 
+
+    public GameStatus getStatus() { return status; } 
+
+    public Player getWinner() { return winner; } 
+
+    public Player getCurrentPlayer() { return players.get(currentPlayerIdx); } 
+
+ 
+
+    private void ensureInProgress() { 
+
+        if (status != GameStatus.IN_PROGRESS) 
+
+            throw new IllegalStateException("Game is over: " + status); 
+
+    } 
+
+ 
+
+    public void makeMove(int row, int col) { 
+
+        ensureInProgress(); 
+
+ 
+
+        if (!board.isInBounds(row, col)) { 
+
+            throw new IllegalArgumentException("Out of bounds: (" + row + "," + col + ")"); 
+
+        } 
+
+        Cell cell = board.getCell(row, col); 
+
+        if (!cell.isEmpty()) { 
+
+            throw new IllegalArgumentException("Cell already occupied at (" + row + "," + col + ")"); 
+
+        } 
+
+ 
+
+        Player player = getCurrentPlayer(); 
+
+        cell.place(player.getSymbol()); 
+
+        Move move = new Move(new Position(row, col), player); 
+
+        moves.push(move); 
+
+ 
+
+        // Update strategy counters and check win 
+
+        winningStrategy.onMoveApplied(board, move); 
+
+        if (winningStrategy.checkWin(board, move)) { 
+
+            status = GameStatus.WON; 
+
+            winner = player; 
+
+            return; 
+
+        } 
+
+ 
+
+        // Check draw 
+
+        if (board.isFull()) { 
+
+            status = GameStatus.DRAW; 
+
+            return; 
+
+        } 
+
+ 
+
+        // Next player's turn 
+
+        currentPlayerIdx = (currentPlayerIdx + 1) % players.size(); 
+
+    } 
+
+ 
+
+    public boolean undo() { 
+
+        if (moves.isEmpty() || status == GameStatus.WON || status == GameStatus.DRAW) { 
+
+            return false; 
+
+        } 
+
+        Move last = moves.pop(); 
+
+        board.getCell(last.pos.row, last.pos.col).clear(); 
+
+        winningStrategy.onUndo(board, last); 
+
+        // revert turn 
+
+        currentPlayerIdx = (currentPlayerIdx - 1 + players.size()) % players.size(); 
+
+        status = GameStatus.IN_PROGRESS; 
+
+        winner = null; 
+
+        return true; 
+
+    } 
+
+ 
+
+    public void printBoard() { board.print(); } 
+
+} 
+
+ 
+
+// ====== Demo (example usage) ====== 
+
+class Demo { 
+
+    public static void main(String[] args) { 
+
+        Player p1 = new Player("Alice", Symbol.X) {}; 
+
+        Player p2 = new Player("Bob",   Symbol.O) {}; 
+
+ 
+
+        Game game = new Game.Builder() 
+
+                .size(3) 
+
+                .addPlayer(p1) 
+
+                .addPlayer(p2) 
+
+                .build(); 
+
+ 
+
+        // Simulate a game: X wins on first row 
+
+        game.makeMove(0,0); // X 
+
+        game.makeMove(1,1); // O 
+
+        game.makeMove(0,1); // X 
+
+        game.makeMove(2,2); // O 
+
+        game.makeMove(0,2); // X -> win 
+
+ 
+
+        game.printBoard(); 
+
+        System.out.println("Status: " + game.getStatus()); 
+
+        if (game.getStatus() == GameStatus.WON) { 
+
+            System.out.println("Winner: " + game.getWinner().getName()); 
+
+        } 
+
+    } 
+
+} 
+
+ 
